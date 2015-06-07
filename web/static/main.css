@@ -1,0 +1,14 @@
+.stats {
+  width: 400px;
+  margin: 400px auto 0 auto;
+}
+
+.table {
+  width: 600px;
+
+  margin: 200px auto 0 auto;
+}
+
+.row {
+  font-size: 30px;
+}

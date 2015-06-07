@@ -9,6 +9,7 @@ int main() {
   int channels[] = {0, 1, 2, 3};
 
   while (1) {
+    cout << "{";
     for (int i = 0; i < 4; i++) {
       int channel = channels[i];
 
@@ -21,8 +22,14 @@ int main() {
       int value = (data[1] << 8) & 0b1100000000;
       value |= (data[2] & 0xff);
 
-      cout << "channel " << channel << ": " << value << endl;
+      cout << "\"channel_" << channel << "\": " << value;
+
+      if (i != 3)
+        cout << ",";
+
     }
+
+    cout << "}" << endl;
 
     sleep(1);
   }

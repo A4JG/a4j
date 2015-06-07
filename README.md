@@ -11,7 +11,7 @@ Connected to UART and 5V.
 
 Connected to I2C and 3.3V.
 
-### MQ 7 Alcohol Sensor
+### MQ 3 Alcohol Sensor
 
 ADC channel 0
 
