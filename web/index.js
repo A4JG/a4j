@@ -2,6 +2,8 @@ var gpsd = require("node-gpsd");
 var fs = require("fs");
 var spawn = require("child_process").spawn
 
+var FILENAME = "data.csv"
+
 var data = {
   lat: null,
   lon: null,
@@ -12,11 +14,17 @@ var data = {
   light: null,
   ir_light: null,
   uv_light: null,
-  alcohol: null,
-  air_quality: null,
-  carbon_monoxide: null,
+  mq3: null,
+  mq135: null,
+  mq7: null,
   mq4: null
 }
+
+var CSV_HEADER = "date," + Object.keys(data).join(",")
+
+fs.writeFile(FILENAME, CSV_HEADER + "\n", function(err) {
+  if (err) console.log("error writing csv file")
+})
 
 var nodeStatic = require("node-static")
 var static = new nodeStatic.Server("./static");
@@ -64,13 +72,15 @@ gpsListener.on("TPV", function(tpv) {
 
 setInterval(function() {
   fs.readFile("/sys/bus/i2c/drivers/bmp085/1-0077/pressure0_input", function(err, buffer) {
-    data.pressure = parseInt(buffer.toString()) / 100
+    if (err) console.log(err)
+    else data.pressure = parseInt(buffer.toString()) / 100
   })
 
   fs.readFile("/sys/bus/i2c/drivers/bmp085/1-0077/temp0_input", function(err, buffer) {
-    data.temperature = parseInt(buffer.toString()) / 10
+    if (err) console.log(err)
+    else data.temperature = parseInt(buffer.toString()) / 10
   })
-}, 1000)
+}, 200)
 
 var sensors = spawn("./sensors")
 
@@ -78,12 +88,11 @@ sensors.stdout.on("data", function(json) {
   try {
     var sensorData = JSON.parse(json)
 
-    data.alcohol = sensorData.channel_0;
-    data.air_quality = sensorData.channel_1;
-    data.carbon_monoxide = sensorData.channel_2;
-    data.smoke = sensorData.channel_3;
+    data.mq3 = sensorData.channel_0;
+    data.mq135 = sensorData.channel_1;
+    data.mq7 = sensorData.channel_2;
+    data.mq4 = sensorData.channel_3;
   }
-
   catch (err) {
 
   }
@@ -95,5 +104,11 @@ io.on("connection", function(socket) {
   setInterval(function() {
     socket.emit("data", data);
     console.log(data)
-  }, 1000);
+  }, 200);
 });
+
+setInterval(function() {
+  fs.appendFile(FILENAME, Date.now() + "," + Object.keys(data).map(function(key) { return data[key] }).join(",") + "\n", function(err) {
+    if (err) console.log("error writing to file")
+  })
+}, 200)

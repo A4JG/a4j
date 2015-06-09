@@ -15,3 +15,5 @@ echo si1132 0x60 > /sys/class/i2c-adapter/i2c-1/new_device
 echo si702x 0x40 > /sys/class/i2c-adapter/i2c-1/new_device
 
 i2cdetect -y 1
+
+gpsd /dev/ttyAMA0

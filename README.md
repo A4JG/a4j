@@ -29,7 +29,7 @@ ADC channel 2
 
 https://www.sparkfun.com/datasheets/Sensors/Biometric/MQ-7.pdf
 
-### MQ 4 Smoke
+### MQ 4 Methane
 
 ADC channel 3
 

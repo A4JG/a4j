@@ -1,3 +1,13 @@
+body {
+  font-family: helvetica, arial, sans-serif;
+}
+
+.page-title {
+  font-size: 42px;
+  margin: 0 auto;
+  margin-bottom: 60px;
+}
+
 .stats {
   width: 400px;
   margin: 400px auto 0 auto;
@@ -9,6 +19,16 @@
   margin: 200px auto 0 auto;
 }
 
-.row {
-  font-size: 30px;
+.section {
+  margin: 0 auto;
+}
+
+.section .title {
+  display: block;
+  font-size: 32px;
+  text-align: center;
+}
+
+.section .epoch {
+  margin: 0 auto;
 }

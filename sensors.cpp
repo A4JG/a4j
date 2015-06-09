@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "mcp3008.h"
 
 using namespace std;
@@ -31,7 +32,7 @@ int main() {
 
     cout << "}" << endl;
 
-    sleep(1);
+    usleep(100000);
   }
 
   return 0;
