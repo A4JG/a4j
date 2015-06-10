@@ -14,6 +14,19 @@
   var graph = null;
 
   // Called when the Visualization API is loaded.
+  function csvToRawData(csv){
+    var rawData = [];
+    csv.split("\n").forEach(function(obj, i){
+        var data = obj.split(",");
+        rawData.push({
+            x: data[0],
+            y: data[1],
+            z: data[2],
+            value: data[3]
+        });
+    });
+    return rawData;
+  }
 
   function drawVisualization(rawData) {
     // Create and populate a data table.
@@ -46,7 +59,15 @@
     var container = document.getElementById('mygraph');
     graph3d = new vis.Graph3d(container, data, options);
   }
-  console.log("Hello")
+
+  function getData(path, cb){
+    $.ajax(path, {
+      success: function(data){
+        console.log(data)
+      }
+    }
+  }
+  getData("https://gist.githubusercontent.com/AlexanderSelzer/79494076e0ee60a6b686/raw/617833b4ec43670b3494c789760f766151d2981e/data3.csv");
   $(document).ready(function(){
     var data = []
     for (var i = 0; i < 10; i++) {
@@ -61,8 +82,9 @@
         }
       }
     }
-    console.log(data)
-    drawVisualization(data)
+
+    
+    //drawVisualization(data)
   })
 
   </script>
