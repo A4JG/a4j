@@ -16,30 +16,38 @@
   // Called when the Visualization API is loaded.
   function csvToRawData(csv){
     var rawData = [];
+    var headers = null;
     csv.split("\n").forEach(function(obj, i){
         var data = obj.split(",");
-        rawData.push({
-            x: data[0],
-            y: data[1],
-            z: data[2],
-            value: data[3]
-        });
+        if (i == 0) {
+          headers = data;
+          return;
+        }
+        var dataObj = {}
+
+        headers.forEach(function(obj, i){
+          dataObj[obj] = data[i]
+        })
+        rawData.push(dataObj);
     });
     return rawData;
   }
 
-  function drawVisualization(rawData) {
+  function drawVisualization(container,rawData, value) {
     // Create and populate a data table.
     var data = new vis.DataSet();
 
     for (var i = 0; i < rawData.length; i+=1) {
-
-        data.add({
-          x: rawData[i].x,
-          y: rawData[i].y,
-          z: rawData[i].z,
-          style: rawData[i].value
-        });
+        var ith = rawData[i];
+        //console.log((ith["lat"] && ith["lon"] && ith["alt"] && ith["temperature"]))
+        if(!(ith["lat"] && ith["lon"] && ith["alt"] && ith[value])) continue;
+        var entry = {
+          x: parseFloat(ith["lat"]),
+          y: parseFloat(ith["lon"]),
+          z: parseFloat(ith["alt"]),
+          style: parseFloat(ith[value])
+        }
+        data.add(entry);
 
     }
 
@@ -56,41 +64,55 @@
     };
 
     // create a graph3d
-    var container = document.getElementById('mygraph');
+
     graph3d = new vis.Graph3d(container, data, options);
   }
 
   function getData(path, cb){
     $.ajax(path, {
       success: function(data){
-        console.log(data)
+        cb(csvToRawData(data))
       }
-    }
+    })
   }
-  getData("https://gist.githubusercontent.com/AlexanderSelzer/79494076e0ee60a6b686/raw/617833b4ec43670b3494c789760f766151d2981e/data3.csv");
-  $(document).ready(function(){
-    var data = []
-    for (var i = 0; i < 10; i++) {
-      for (var j = 0; j < 15; j++) {
-        for (var k = 0; k < 15; k++) {
-          data.push({
-            x:i,
-            y:j,
-            z:k,
-            value: Math.random()+Math.random()+Math.random()+Math.random()+Math.random()+Math.random()
-          })
-        }
-      }
-    }
 
-    
-    //drawVisualization(data)
+
+
+  $(document).ready(function(){
+    var data = [],
+      graph_temp = document.getElementById('graph_temp'),
+      graph_pres = document.getElementById('graph_pres'),
+      graph_alc = document.getElementById('graph_alc'),
+      graph_air = document.getElementById('graph_air'),
+      graph_co = document.getElementById('graph_co'),
+      graph_meth = document.getElementById('graph_meth');
+
+
+    getData("https://gist.githubusercontent.com/AlexanderSelzer/505b02efee1e1230d999/raw/ad4c6f4b52eb130450fe3997c8081f9c249cc471/data,csv", function(data){
+      drawVisualization(graph_temp, data, "temperature")
+      drawVisualization(graph_pres, data, "pressure")
+      drawVisualization(graph_alc, data, "mq3")
+      drawVisualization(graph_air, data, "mq135")
+      drawVisualization(graph_co, data, "mq7")
+      drawVisualization(graph_meth, data, "mq4")
+    });
   })
 
   </script>
 </head>
 
 <body>
-  <div id="mygraph"></div>
+  <h1>Temperature</h1>
+  <div id="graph_temp"></div>
+  <h1>Pressure</h1>
+  <div id="graph_pres"></div>
+  <h1>Alcohol - MQ3</h1>
+  <div id="graph_alc"></div>
+  <h1>Air - MQ135</h1>
+  <div id="graph_air"></div>
+  <h1>CO - MQ4</h1>
+  <div id="graph_co"></div>
+  <h1>Methane - MQ4</h1>
+  <div id="graph_meth"></div>
 </body>
 </html>
