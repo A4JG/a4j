@@ -88,7 +88,7 @@
       graph_meth = document.getElementById('graph_meth');
 
 
-    getData("https://gist.githubusercontent.com/AlexanderSelzer/505b02efee1e1230d999/raw/ad4c6f4b52eb130450fe3997c8081f9c249cc471/data,csv", function(data){
+    getData(location.host + "/data.csv", function(data){
       drawVisualization(graph_temp, data, "temperature")
       drawVisualization(graph_pres, data, "pressure")
       drawVisualization(graph_alc, data, "mq3")
