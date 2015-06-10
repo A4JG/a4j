@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Graph 3D demo</title>
+
+  <style>
+    body {font: 10pt arial;}
+  </style>
+
+  <script type="text/javascript" src="bower_components/vis/dist/vis.js"></script>
+  <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript">
+  var data = null;
+  var graph = null;
+
+  // Called when the Visualization API is loaded.
+
+  function drawVisualization(rawData) {
+    // Create and populate a data table.
+    var data = new vis.DataSet();
+
+    for (var i = 0; i < rawData.length; i+=1) {
+
+        data.add({
+          x: rawData[i].x,
+          y: rawData[i].y,
+          z: rawData[i].z,
+          style: rawData[i].value
+        });
+
+    }
+
+    // specify options
+    var options = {
+      width:  '600px',
+      height: '600px',
+      style: 'dot-color',
+      showPerspective: true,
+      showGrid: true,
+      showShadow: false,
+      keepAspectRatio: true,
+      verticalRatio: 0.5
+    };
+
+    // create a graph3d
+    var container = document.getElementById('mygraph');
+    graph3d = new vis.Graph3d(container, data, options);
+  }
+  console.log("Hello")
+  $(document).ready(function(){
+    var data = []
+    for (var i = 0; i < 10; i++) {
+      for (var j = 0; j < 15; j++) {
+        for (var k = 0; k < 15; k++) {
+          data.push({
+            x:i,
+            y:j,
+            z:k,
+            value: Math.random()+Math.random()+Math.random()+Math.random()+Math.random()+Math.random()
+          })
+        }
+      }
+    }
+    console.log(data)
+    drawVisualization(data)
+  })
+
+  </script>
+</head>
+
+<body>
+  <div id="mygraph"></div>
+</body>
+</html>
