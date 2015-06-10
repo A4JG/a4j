@@ -3,8 +3,8 @@
 <html>
   <head>
     <title>Hi</title>
-    <link rel="stylesheet" href="main.css" />
-    <link rel="stylesheet" href="bower_components/epoch/epoch.min.css" />
+    <link rel="stylesheet" type="text/css" href="main.css" />
+    <link rel="stylesheet" type="text/css" href="bower_components/epoch/epoch.min.css" />
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/d3/d3.min.js"></script>
     <script src="bower_components/epoch/epoch.min.js"></script>
@@ -13,7 +13,22 @@
 
   <body>
 
-    <div id="graph"></div>
+    <div class="page-title">Sensor Monitor</div>
+
+    <div class="section">
+      <div class="title">Gas Sensors (ADC values)</div>
+      <div id="graph" class="epoch category10" style="width: 1200px; height: 600px;"></div>
+    </div>
+
+    <div class="section">
+      <div class="title">Barometer (mbar)</div>
+      <div id="graph2" class="epoch category10" style="width: 1000px; height: 400px;"></div>
+    </div>
+
+    <div class="section">
+      <div class="title">Temperature</div>
+      <div id="graph3" class="epoch category10" style="width: 1000px; height: 400px;"></div>
+    </div>
 
     <div class="table">
       
