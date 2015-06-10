@@ -63,11 +63,20 @@ gpsListener.on("TPV", function(tpv) {
   if (tpv.lat)
     data.lat = tpv.lat
 
+  if (tpv.epx)
+    data.epx = tpv.epx
+
   if (tpv.lon)
     data.lon = tpv.lon
 
+  if (tpv.epy)
+    data.epy = tpv.epy
+
   if (tpv.alt)
     data.alt = tpv.alt
+
+  if (tpv.epv)
+    data.epv = tpv.epv
 })
 
 setInterval(function() {
